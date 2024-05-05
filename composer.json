@@ -1,0 +1,23 @@
+{
+    "name": "graphicode/auth",
+    "description": "This is main Auth module for graphicode",
+    "authors": [
+        {
+            "name": "NicoAhmedFekry98",
+            "email": "AhmedFekry@graphicode.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [],
+            "aliases": {
+
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\Auth\\": ""
+        }
+    }
+}
