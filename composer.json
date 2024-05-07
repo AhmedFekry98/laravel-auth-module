@@ -1,10 +1,11 @@
 {
-    "name": "graphicode/auth",
+    "name": "graphicode/auth-module",
     "description": "This is main Auth module for graphicode",
     "authors": [],
     "type": "laravel-module",
     "license": "MIT",
     "extra": {
+        "module-dir": "Modules",
         "laravel": {
             "providers": [],
             "aliases": {
