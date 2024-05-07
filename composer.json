@@ -1,14 +1,10 @@
 {
     "name": "graphicode/auth",
     "description": "This is main Auth module for graphicode",
-    "authors": [
-        {
-            "name": "NicoAhmedFekry98",
-            "email": "AhmedFekry@graphicode.com"
-        }
-    ],
+    "authors": [],
+    "type": "laravel-module",
+    "license": "MIT",
     "extra": {
-        "module-dir": "Modules",
         "laravel": {
             "providers": [],
             "aliases": {
