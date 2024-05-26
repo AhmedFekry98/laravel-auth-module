@@ -1,11 +1,13 @@
 {
-    "name": "graphicode/auth-module",
-    "description": "This is main Auth module for graphicode",
-    "authors": [],
-    "type": "laravel-module",
-    "license": "MIT",
+    "name": "nwidart/auth",
+    "description": "",
+    "authors": [
+        {
+            "name": "Nicolas Widart",
+            "email": "n.widart@gmail.com"
+        }
+    ],
     "extra": {
-        "module-dir": "Modules",
         "laravel": {
             "providers": [],
             "aliases": {

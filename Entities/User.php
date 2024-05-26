@@ -36,6 +36,11 @@ class User extends Authenticatable
             :  false;
     }
 
+    public function getTypeAttribute()
+    {
+        return $this->roles->first()?->name;
+    }
+
     protected static function newFactory()
     {
         return \Modules\Auth\Database\factories\UserFactory::new();
@@ -44,7 +49,20 @@ class User extends Authenticatable
 
     public function roles()
     {
-        return $this->belongsToMany(Role::class, 'user_roles',  'role_id');
+        return $this->belongsToMany(Role::class, 'user_roles',  'user_id', 'role_id');
+    }
+
+    public function assignRole(string $name)
+    {
+        try {
+            $role = Role::where('name', $name)->firstOrFail();
+
+            $this->roles()->attach($role->id);
+            return true;
+        }
+        catch(\Exception) {
+            return false;
+        }
     }
 
     public function abilitiesFor(string $roleName): array

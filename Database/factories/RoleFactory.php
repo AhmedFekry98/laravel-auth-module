@@ -22,7 +22,7 @@ class RoleFactory extends Factory
     {
         return [
             'name'      => $this->faker->randomElement(['admin','user','member']),
-            'abilities' => json_encode(['*']),
+            'abilities' => json_encode(array_keys(config('system.permisions'))),
         ];
     }
 }

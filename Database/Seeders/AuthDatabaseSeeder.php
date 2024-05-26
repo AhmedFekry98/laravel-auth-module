@@ -19,7 +19,30 @@ class AuthDatabaseSeeder extends Seeder
     {
         // Model::unguard();
 
-        User::factory(50)->create();
-        Role::factory(3)->create();
+        $roles = [
+            'user',
+            'admin',
+            'member',
+        ];
+
+
+        foreach ($roles as $role) {
+            Role::factory()->create([
+                'name' => $role,
+                'abilities' => json_encode(array_keys(config('system.permisions'))),
+            ]);
+        }
+
+        User::factory()
+            ->create([
+                'username' => 'admin@gfc.com',
+            ])
+            ->assignRole('admin');
+
+        User::factory(50)
+            ->create()
+            ->map(
+                fn ($user) => $user->assignRole('user')
+            );
     }
 }

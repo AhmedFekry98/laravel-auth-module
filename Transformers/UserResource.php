@@ -14,6 +14,7 @@ class UserResource extends JsonResource
      */
     public function toArray($request)
     {
+      
         return array_merge(
             // start of object
             [
@@ -24,7 +25,8 @@ class UserResource extends JsonResource
             $this->extra,
             // add datates
             [
-                'join_at'   => $this->created_at,
+                'type' => $this->type,
+                'created_at'   => $this->created_at,
                 'update_at' => $this->update_at
             ]
         );

@@ -17,7 +17,7 @@ class RoleCheck
     public function handle(Request $request, Closure $next, string $name)
     {
         $user = $request->user();
-
+        
         if (!$user) {
             return response()->json(
                 [
@@ -37,7 +37,7 @@ class RoleCheck
                 [
                     'message' =>  __("you have not role '$name' to access this resource")
                 ],
-                403
+                401
             );
         }
 

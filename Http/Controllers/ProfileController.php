@@ -9,49 +9,57 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Modules\Auth\Http\Requests\UpProfileRequest;
 use Modules\Auth\Services\ProfileServices;
+use Modules\Auth\Transformers\UserResource;
 
 class ProfileController extends Controller
 {
-    use ApiResponses;
+  use ApiResponses;
 
-    public function __construct(
-        private ProfileServices $profileServices
-    )
-    {}
+  public function __construct(
+    private ProfileServices $profileServices
+  ) {
+  }
+
+  public function index()
+  {
+    $profiles = $this->profileServices->getAll();
+
+    return $this->okResponse(
+      data: UserResource::collection($profiles),
+      message: __('success_messages.get_data')
+    );
+  }
 
 
-    public function edit(Request $request)
-    {
-        $profile = $this->profileServices->getOne();
+  public function show(Request $request)
+  {
+    $profile = $this->profileServices->getOne();
 
-        if($profile->errorInfo ?? null || !$profile){
-            return $this->badResponse(
-              $message = __("error_messages.profile")
-            );
-          }
-
-        return $this->okResponse(
-            $profile,
-            $messge = __('success_messages.profile')
-        );
+    if ($profile->errorInfo ?? null || !$profile) {
+      return $this->badResponse(
+        $message = __("error_messages.profile")
+      );
     }
 
-    public function update(UpProfileRequest $request)
-    {
-        $profile = $this->profileServices->update(TDOFacade::make($request));
+    return $this->okResponse(
+      $profile,
+      $messge = __('success_messages.profile')
+    );
+  }
 
-        if($profile->errorInfo ?? null || !$profile){
-            return $this->badResponse(
-              $message = __("error_messages.up_profile")
-            );
-          }
+  public function update(UpProfileRequest $request)
+  {
+    $profile = $this->profileServices->update(TDOFacade::make($request));
 
-        return $this->okResponse(
-            $profile,
-            $messge = __('success_messages.up_profile')
-        );
-
+    if ($profile->errorInfo ?? null || !$profile) {
+      return $this->badResponse(
+        $message = __("error_messages.up_profile")
+      );
     }
 
-
+    return $this->okResponse(
+      $profile,
+      $messge = __('success_messages.up_profile')
+    );
+  }
 }

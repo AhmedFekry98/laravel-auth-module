@@ -26,7 +26,7 @@ Route::group([
 ], function () {
     Route::post('register'             , [AuthController::class, 'register']);
     Route::post('login'                , [AuthController::class, 'login']);
-    Route::post('logout'               , [AuthController::class, 'logout'])->middleware('auth:user'); 
+    Route::post('logout'               , [AuthController::class, 'logout'])->middleware('auth:sanctum'); 
 
     Route::post('forgot-password'      , [AuthController::class, 'forgotPassword']);
     Route::post('check-otp'            , [AuthController::class, 'checkOTP']);
@@ -40,6 +40,6 @@ Route::group([
     'prefix' => 'profile',
 ], function () {
     Route::get('/'                             , [ProfileController::class, 'index']);
-    Route::get('-edit'                         , [ProfileController::class, 'edit']);
+    Route::get('-edit'                         , [ProfileController::class, 'show']);
     Route::get('-update'                       , [ProfileController::class, 'update']);
 });

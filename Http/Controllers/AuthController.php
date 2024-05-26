@@ -43,6 +43,7 @@ class AuthController extends Controller
   # Function Register
   public function register(RegisterRequest $request)
   {
+ 
     $user = $this->registerService->register((TDOFacade::make($request)));
 
     if ($user->errorInfo ?? null) {
@@ -57,7 +58,7 @@ class AuthController extends Controller
     return $this->okResponse(
       [
         'token' => $token->plainTextToken,
-        'data'  => UserResource::make($user)
+        'user'  => UserResource::make($user)
       ],
       $message = __("success_messages.user_register")
     );
@@ -80,7 +81,7 @@ class AuthController extends Controller
     return $this->okResponse(
       [
         'token' => $token,
-        'data'  => UserResource::make($user)
+        'user'  => UserResource::make($user)
       ],
       $message = __("success_messages.user_login")
     );
@@ -93,8 +94,8 @@ class AuthController extends Controller
     $user =  $this->logoutService->logout($request->user());
     if ($user) {
       return $this->okResponse(
-        $user,
-        $message = __('success_messages.user_logout')
+        data: (object) [],
+        message: __('success_messages.user_logout')
       );
     }
 
@@ -123,31 +124,43 @@ class AuthController extends Controller
   }
 
   // # Function check-otp
-  // public function checkOtp(CheckOtpRequest $request)
-  // {
-  //   $otp = $this->CheckOtpService->checkOtp(TDOFacade::make($request));
-  //   return $otp;
-  // }
+  public function checkOtp(CheckOtpRequest $request)
+  {
+    $otpToken = $this->CheckOtpService->checkOtp(TDOFacade::make($request));
+    
+    if ( isset($otpToken['error']) ) {
+      return $this->badResponse(
+        message: $otpToken['error']
+      );
+    }
+    return $this->okResponse(
+      data: [
+        'otpToken' => $otpToken
+      ],
+      message: 'Get OTP Token successfuly'
+    );
+  }
 
   # reset-password
   public function resetPassword(ResetPasswordRequest $request)
   {
     $user = $this->resetPasswordService->resetPassword(TDOFacade::make($request));
 
-    if ($user == 'expird') {
+    if ( isset($user['error']) ) {
       return $this->badResponse(
-        $message = __("error_messages.expird_resettoken")
+        message: $user['error']
       );
     }
 
-    if ($user->errorInfo ?? null || !$user) {
-      return $this->badResponse(
-        $message = __("error_messages.user_resetpassword")
-      );
-    }
+    $deviceName = $request->post("device_name", $request->userAgent());
+    $token = $user->createToken($deviceName)->plainTextToken;
 
     return $this->okResponse(
-      $message = __('success_messages.user_resetpassword')
+      data: [
+        'token' => $token,
+        'user'  => UserResource::make($user)
+      ],
+      message: __('success_messages.user_resetpassword')
     );
   }
 

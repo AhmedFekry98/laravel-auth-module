@@ -14,8 +14,8 @@ class CheckOtpRequest extends FormRequest
     public function rules()
     {
         return [
-            'email' => ['required','email','exists:users,email'],
-            'otp'   => ['required','integer']
+            'email' => ['required','email','exists:users,username'],
+            'otp'   => ['required','string', 'min:4', 'max:4']
         ];
     }
 
